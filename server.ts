@@ -10,13 +10,18 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 5001;
 
-app.listen(PORT, () => {
-    console.log(`Server running on ${PORT}`);
-});
 
 
 app.post('/api/submit', async (req, res) => {
     const { input } = req.body;
     const result = await handleInput(input);
     res.json({ message: result });
+});
+
+app.get('/test', (req, res) => {
+    res.json({ message: 'works' });
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on ${PORT}`);
 });

@@ -1,5 +1,5 @@
 # web-tool
-web tool
+npm run dev for frontend
 
 use ms library for time 
 docker for later

@@ -1,6 +1,13 @@
-// runs every 30s
-async function thirtysecs () {
-    setInterval(() => {
 
-    }, 30_000);
+//async function thirtysecs () {
+        //setInterval(() => {
+            //result: string = input
+        //}, 30_000); 
+    //}
+
+export async function handleInput(input: string): Promise<string> {
+    const res = await fetch(input);
+    const data = await res.json();
+    console.log("hello")
+    return JSON.stringify(data);
 }

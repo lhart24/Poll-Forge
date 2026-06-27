@@ -8,7 +8,5 @@
 export async function handleInput(input: string): Promise<string> {
     const res = await fetch(input);
     const data = await res.json();
-    console.log("hello")
     return JSON.stringify(data);
 }
-

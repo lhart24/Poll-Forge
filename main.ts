@@ -1,12 +1,35 @@
 
-//async function thirtysecs () {
-        //setInterval(() => {
-            //result: string = input
-        //}, 30_000); 
-    //}
-
 export async function handleInput(input: string): Promise<string> {
     const res = await fetch(input);
     const data = await res.json();
     return JSON.stringify(data);
 }
+
+// button intervals
+const INTERVALS: Record <string, number>  = {
+    '30s': 30_000,
+    '1m': 60_000,
+    '2m': 120_000,
+    '5m': 300_000,
+}
+
+
+//let activeInterval: ReturnType<typeof setInterval> | null = null;
+
+//export function startPolling(input: string, intervalKey: string, onResult: (result: string) => void): void {
+    //if (activeInterval) clearInterval(activeInterval);
+
+    //const ms = INTERVALS[intervalKey] ?? 30_000;
+
+    //activeInterval = setInterval(async () => {
+        //const result = await handleInput(input);
+        //onResult(result);
+    //}, ms);
+//}
+
+//export function stopPolling(): void {
+    //if (activeInterval) {
+        //clearInterval(activeInterval);
+        //activeInterval = null;
+    //}
+//}

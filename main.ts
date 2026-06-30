@@ -1,4 +1,4 @@
-
+// handle input
 export async function handleInput(input: string): Promise<string> {
     const res = await fetch(input);
     const data = await res.json();
@@ -13,23 +13,27 @@ const INTERVALS: Record <string, number>  = {
     '5m': 300_000,
 }
 
+// set active interval if one is active, if not set as null
+let activeInterval: ReturnType<typeof setInterval> | null = null;
 
-//let activeInterval: ReturnType<typeof setInterval> | null = null;
 
-//export function startPolling(input: string, intervalKey: string, onResult: (result: string) => void): void {
-    //if (activeInterval) clearInterval(activeInterval);
+export function startPolling(input: string, intervalKey: string, onResult: (result: string) => void): void{
+    if (activeInterval){
+        clearInterval(activeInterval)
+    }
 
-    //const ms = INTERVALS[intervalKey] ?? 30_000;
+    const ms = INTERVALS[intervalKey] ?? 30_000
 
-    //activeInterval = setInterval(async () => {
-        //const result = await handleInput(input);
-        //onResult(result);
-    //}, ms);
-//}
+    activeInterval = setInterval(async () => {
+        const result = await handleInput(input)
+        onResult(result)
+    }, ms)
+}
 
-//export function stopPolling(): void {
-    //if (activeInterval) {
-        //clearInterval(activeInterval);
-        //activeInterval = null;
-    //}
-//}
+
+export function stopPolling(): void {
+    if (activeInterval) {
+        clearInterval(activeInterval);
+        activeInterval = null;
+    }
+}

@@ -1,33 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { startPolling, stopPolling, handleInput } from '../../polling';
 
 function App() {
   const [value, setValue] = useState('');
   const [results, setResults] = useState([]);
-  const [interval, setInterval] = useState('30s');
+  const [intervalKey, setIntervalKey] = useState('30s');
 
-  const handleSubmit = async () => {
-    const res = await fetch('http://localhost:5001/api/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ input: value }),
-    });
 
-    const data = await res.json();
 
-    setResults(prev => [
-      ...prev,
-      {
-        input: value,
-        message: data.message
-      }
-    ]);
+const [submittedValue, setSubmittedValue] = useState('');
 
-    setValue('');
-  };
+useEffect(() => {
+  if (!submittedValue) return;
+
+  startPolling(submittedValue, intervalKey, (message) => {
+    setResults(prev => [...prev, { input: submittedValue, message }]);
+  });
+
+  return () => stopPolling();
+}, [intervalKey, submittedValue]);
+
+const handleSubmit = async () => {
+  setSubmittedValue(value);
+  setValue('');
+};
 
   return (
     <>
-      <select value={interval} onChange={(e) => setInterval(e.target.value)}>
+      <select value={intervalKey} onChange={(e) => setIntervalKey(e.target.value)}>
         <option value="30s">30s</option>
         <option value="1m">1m</option>
         <option value="2m">2m</option>

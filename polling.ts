@@ -1,8 +1,12 @@
 // handle input
 export async function handleInput(input: string): Promise<string> {
-    const res = await fetch(input);
+    const res = await fetch('http://localhost:5001/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input }),
+    });
     const data = await res.json();
-    return JSON.stringify(data);
+    return data.message;
 }
 
 // button intervals

@@ -1,6 +1,6 @@
 import express from 'express'; 
 import cors from 'cors';
-import { handleInput } from './main';
+
 
 const app = express();
 
@@ -12,10 +12,15 @@ const PORT = process.env.PORT || 5001;
 
 app.post('/api/submit', async (req, res) => {
     const { input } = req.body;
-    const result = await handleInput(input);
-    res.json({ message: result });
-});
 
+    try {
+        const apiRes = await fetch(input);
+        const data = await apiRes.json();
+        res.json({ message: JSON.stringify(data) });
+    } catch (err) {
+        res.status(500).json({ message: 'Failed to fetch input URL' });
+    }
+});
 
 
 app.listen(PORT, () => {

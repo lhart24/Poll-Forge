@@ -21,17 +21,21 @@ const INTERVALS: Record <string, number>  = {
 let activeInterval: ReturnType<typeof setInterval> | null = null;
 
 
-export function startPolling(input: string, intervalKey: string, onResult: (result: string) => void): void{
-    if (activeInterval){
-        clearInterval(activeInterval)
+export function startPolling(input: string, intervalKey: string, onResult: (result: string) => void): void {
+    if (activeInterval) {
+        clearInterval(activeInterval);
     }
 
-    const ms = INTERVALS[intervalKey] ?? 30_000
+    const ms = INTERVALS[intervalKey] ?? 30_000;
 
+    // call immediately on submit
+    handleInput(input).then(onResult);
+
+    // then repeat on the interval
     activeInterval = setInterval(async () => {
-        const result = await handleInput(input)
-        onResult(result)
-    }, ms)
+        const result = await handleInput(input);
+        onResult(result);
+    }, ms);
 }
 
 
@@ -41,3 +45,4 @@ export function stopPolling(): void {
         activeInterval = null;
     }
 }
+

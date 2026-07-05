@@ -26,6 +26,7 @@ function App() {
   return (
     <div className="app">
       <div className="header">
+        <h1>Poll Forge</h1>
         <h1>API poller</h1>
         <p>Poll any JSON endpoint and inspect responses.</p>
       </div>

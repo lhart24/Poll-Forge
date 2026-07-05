@@ -1,7 +1,6 @@
 # web-tool
-npm run dev for frontend
+npm run dev
 
-use ms library for time 
 docker for later
 react for front end
 node for back end

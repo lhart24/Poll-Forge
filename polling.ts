@@ -1,12 +1,13 @@
-// handle input
-export async function handleInput(input: string): Promise<string> {
+export async function handleInput(input: string) {
     const res = await fetch('http://localhost:5001/api/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ input }),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ input })
     });
-    const data = await res.json();
-    return data.message;
+
+    return await res.json();
 }
 
 // button intervals
@@ -21,22 +22,43 @@ const INTERVALS: Record <string, number>  = {
 let activeInterval: ReturnType<typeof setInterval> | null = null;
 
 
-export function startPolling(input: string, intervalKey: string, onResult: (result: string) => void): void {
+export function startPolling(
+    input: string,
+    intervalKey: string,
+    onResult: (result: string) => void
+): void {
     if (activeInterval) {
         clearInterval(activeInterval);
     }
 
     const ms = INTERVALS[intervalKey] ?? 30_000;
 
-    // call immediately on submit
-    handleInput(input).then(onResult);
+    const poll = async () => {
+        try {
+            const result = await handleInput(input);
 
-    // then repeat on the interval
-    activeInterval = setInterval(async () => {
-        const result = await handleInput(input);
-        onResult(result);
-    }, ms);
+            onResult(
+                `Status: ${result.status} ${result.statusText}
+Success: ${result.success}
+
+${JSON.stringify(result.body, null, 2)}`
+            );
+        } catch (err) {
+            onResult(
+                `Polling failed: ${
+                    err instanceof Error ? err.message : 'Unknown error'
+                }`
+            );
+        }
+    };
+
+    // Run immediately
+    poll();
+
+    // Then repeat
+    activeInterval = setInterval(poll, ms);
 }
+
 
 
 export function stopPolling(): void {

@@ -1,31 +1,38 @@
-export async function handleInput(input: string) {
+// polling.ts
+
+export interface PollResult {
+    success: boolean;
+    status: number;
+    statusText: string;
+    headers: Record<string, string>;
+    body: unknown;
+}
+
+export async function handleInput(input: string): Promise<PollResult> {
     const res = await fetch('http://localhost:5001/api/submit', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ input })
+        body: JSON.stringify({ input }),
     });
 
     return await res.json();
 }
 
-// button intervals
-const INTERVALS: Record <string, number>  = {
+const INTERVALS: Record<string, number> = {
     '30s': 30_000,
     '1m': 60_000,
     '2m': 120_000,
     '5m': 300_000,
-}
+};
 
-// set active interval if one is active, if not set as null
 let activeInterval: ReturnType<typeof setInterval> | null = null;
-
 
 export function startPolling(
     input: string,
     intervalKey: string,
-    onResult: (result: string) => void
+    onResult: (result: PollResult) => void
 ): void {
     if (activeInterval) {
         clearInterval(activeInterval);
@@ -33,33 +40,29 @@ export function startPolling(
 
     const ms = INTERVALS[intervalKey] ?? 30_000;
 
-    const poll = async () => {
+    const poll = async (): Promise<void> => {
         try {
             const result = await handleInput(input);
-
-            onResult(
-                `Status: ${result.status} ${result.statusText}
-Success: ${result.success}
-
-${JSON.stringify(result.body, null, 2)}`
-            );
+            onResult(result);
         } catch (err) {
-            onResult(
-                `Polling failed: ${
-                    err instanceof Error ? err.message : 'Unknown error'
-                }`
-            );
+            onResult({
+                success: false,
+                status: 500,
+                statusText: 'Polling Error',
+                headers: {},
+                body: err instanceof Error ? err.message : 'Unknown error',
+            });
         }
     };
 
     // Run immediately
-    poll();
+    void poll();
 
-    // Then repeat
-    activeInterval = setInterval(poll, ms);
+    // Continue polling
+    activeInterval = setInterval(() => {
+        void poll();
+    }, ms);
 }
-
-
 
 export function stopPolling(): void {
     if (activeInterval) {
@@ -67,4 +70,3 @@ export function stopPolling(): void {
         activeInterval = null;
     }
 }
-

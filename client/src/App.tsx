@@ -4,6 +4,7 @@ import {
   stopPolling,
   type PollResult,
 } from '../../polling';
+
 import './style.css';
 
 function App() {

@@ -93,26 +93,44 @@ function App() {
               <th>Input</th>
               <th>Status</th>
               <th>Success</th>
+              <th>Speed</th>
               <th>Response</th>
             </tr>
           </thead>
 
           <tbody>
-            {results.map((item, index) => (
-              <tr key={index}>
-                <td>{item.input}</td>
-                <td>
-                  {item.result.status} {item.result.statusText}
-                </td>
-                <td>{item.result.success ? '✅' : '❌'}</td>
-                <td>
-                  <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
-                    {JSON.stringify(item.result.body, null, 2)}
-                  </pre>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+  {results.map((item, index) => (
+    <tr key={index}>
+      <td>{item.input}</td>
+
+      <td>
+        {item.result.status} {item.result.statusText}
+      </td>
+
+      <td>{item.result.success ? '✅' : '❌'}</td>
+
+      <td
+        style={{
+          color:
+            item.result.responseTime < 200
+              ? 'green'
+              : item.result.responseTime < 1000
+              ? 'orange'
+              : 'red',
+          fontWeight: 'bold',
+        }}
+      >
+        {item.result.responseTime} ms
+      </td>
+
+      <td>
+        <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
+          {JSON.stringify(item.result.body, null, 2)}
+        </pre>
+      </td>
+    </tr>
+  ))}
+</tbody>
         </table>
       )}
     </div>

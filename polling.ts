@@ -4,6 +4,7 @@ export interface PollResult {
     success: boolean;
     status: number;
     statusText: string;
+    responseTime: number,
     headers: Record<string, string>;
     body: unknown;
 }
@@ -49,6 +50,7 @@ export function startPolling(
                 success: false,
                 status: 500,
                 statusText: 'Polling Error',
+                responseTime: 0,
                 headers: {},
                 body: err instanceof Error ? err.message : 'Unknown error',
             });

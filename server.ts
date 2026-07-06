@@ -19,7 +19,16 @@ app.post('/api/submit', async (req, res) => {
     }
 
     try {
+        // measure the speed before the call
+        const start = performance.now()
+
         const apiRes = await fetch(input);
+
+        // measure the speed after the call
+        const end = performance.now()
+
+        // calculate speed of api call
+        const responseTime = Math.round(end - start)
 
         const contentType = apiRes.headers.get('content-type');
 
@@ -37,6 +46,7 @@ app.post('/api/submit', async (req, res) => {
             success: apiRes.ok,
             status: apiRes.status,
             statusText: apiRes.statusText,
+            responseTime,
             headers: Object.fromEntries(apiRes.headers.entries()),
             body
         });

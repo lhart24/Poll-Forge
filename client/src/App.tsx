@@ -7,6 +7,8 @@ import {
 
 import './style.css';
 
+import MainGraph from './ResponseChart';
+
 function App() {
   const [value, setValue] = useState('');
   const [results, setResults] = useState<
@@ -130,10 +132,24 @@ function App() {
       </td>
     </tr>
   ))}
+  <div className="app">
+  {/* Header */}
+
+  {/* Controls */}
+
+  <MainGraph data={results} />
+
+  {results.length > 0 && (
+    <table>
+      ...
+    </table>
+  )}
+</div>
 </tbody>
         </table>
       )}
     </div>
+    
   );
 }
 

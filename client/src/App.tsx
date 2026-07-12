@@ -5,11 +5,17 @@ import {
   type PollResult,
 } from '../../polling';
 
+
+import { useNavigate } from "react-router-dom";
+
 import './style.css';
 
 import MainGraph from './ResponseChart';
 
+
+
 function App() {
+  const navigate = useNavigate();
   const [value, setValue] = useState('');
   const [results, setResults] = useState<
     { input: string; result: PollResult }[]
@@ -41,8 +47,15 @@ function App() {
   };
 
   return (
+    
     <div className="app">
   <div className="header">
+    <button
+  className="btn"
+  onClick={() => navigate("/dashboard")}
+>
+  Dashboard
+</button>
     <h1>Poll Forge</h1>
     <h2>API Poller</h2>
     <p>Poll any endpoint and inspect responses.</p>

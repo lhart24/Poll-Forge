@@ -50,18 +50,18 @@ function App() {
     
     <div className="app">
   <div className="header">
+    <h1>Poll Forge</h1>
+    <h2>API Poller</h2>
+    <p>Poll any endpoint and inspect responses.</p>
+  </div>
+  
+  <div className="controls">
     <button
   className="btn"
   onClick={() => navigate("/dashboard")}
 >
   Dashboard
 </button>
-    <h1>Poll Forge</h1>
-    <h2>API Poller</h2>
-    <p>Poll any endpoint and inspect responses.</p>
-  </div>
-
-  <div className="controls">
     <select
       value={intervalKey}
       onChange={(e) => setIntervalKey(e.target.value)}
@@ -99,6 +99,8 @@ function App() {
     >
       Clear
     </button>
+
+    
   </div>
 
   <MainGraph data={results} />

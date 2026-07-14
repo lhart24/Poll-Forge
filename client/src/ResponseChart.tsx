@@ -7,12 +7,13 @@ type Props = {
     result: PollResult;
   }[];
 };
-
+// have to store data in local storage so that data transfers over between pages
 export default function MainGraph({ data }: Props) {
   const chartData = data.map((item, i) => ({
     name: `#${i + 1}`,
     responseTime: item.result.responseTime,
   }));
+  
 
   return (
     <ResponsiveContainer width="100%" height={400}>

@@ -9,8 +9,6 @@ import {
 import './style.css';
 import MainGraph from './ResponseChart';
 
-// ---- EndpointCard (internal component, same file) ----
-
 interface EndpointCardProps {
   endpoint: MonitoredEndpoint;
   onStop: (id: string) => void;
@@ -126,7 +124,7 @@ function EndpointCard({ endpoint, onStop, onResume, onRemove }: EndpointCardProp
   );
 }
 
-// ---- Main App ----
+
 
 function App() {
   const [value, setValue] = useState('');

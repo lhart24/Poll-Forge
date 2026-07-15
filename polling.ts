@@ -1,10 +1,19 @@
-// polling.ts
+export interface MonitoredEndpoint {
+    id: string;
+    url: string;
+    intervalKey: string;
+    results: PollResult[]
+    isActive: boolean
+}   
+
+
+
 
 export interface PollResult {
     success: boolean;
     status: number;
     statusText: string;
-    responseTime: number,
+    responseTime: number;
     headers: Record<string, string>;
     body: unknown;
 }
@@ -28,16 +37,19 @@ const INTERVALS: Record<string, number> = {
     '5m': 300_000,
 };
 
-let activeInterval: ReturnType<typeof setInterval> | null = null;
+
+const activeIntervals = new Map<string, ReturnType<typeof setInterval>>();
 
 export function startPolling(
+    id: string,
     input: string,
     intervalKey: string,
+
     onResult: (result: PollResult) => void
 ): void {
-    if (activeInterval) {
-        clearInterval(activeInterval);
-    }
+    stopPolling(id)
+
+
 
     const ms = INTERVALS[intervalKey] ?? 30_000;
 
@@ -61,14 +73,16 @@ export function startPolling(
     void poll();
 
     // Continue polling
-    activeInterval = setInterval(() => {
+    activeIntervals.set(id, setInterval(() => {
         void poll();
-    }, ms);
+    }, ms));
 }
 
-export function stopPolling(): void {
-    if (activeInterval) {
-        clearInterval(activeInterval);
-        activeInterval = null;
+export function stopPolling( id: string): void {
+    const interval = activeIntervals.get(id)
+
+    if (interval) {
+        clearInterval(interval);
+        activeIntervals.delete(id)
     }
 }

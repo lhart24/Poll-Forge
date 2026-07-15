@@ -30,6 +30,7 @@ app.post('/api/submit', async (req, res) => {
         // calculate speed of api call
         const responseTime = Math.round(end - start)
 
+
         const contentType = apiRes.headers.get('content-type');
 
         let body = null;

@@ -130,8 +130,12 @@ function App() {
   const [value, setValue] = useState('');
   const [intervalKey, setIntervalKey] = useState('30s');
   const [endpoints, setEndpoints] = useState<MonitoredEndpoint[]>(() => {
-    const stored = localStorage.getItem('endpoints');
-    return stored ? JSON.parse(stored) : [];
+    try{
+      const stored = localStorage.getItem('endpoints');
+      return stored ? JSON.parse(stored) : [];
+    } catch{
+      return [];
+    }
   });
   useEffect(() => {
     endpoints.forEach(ep => {

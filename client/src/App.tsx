@@ -138,7 +138,7 @@ function App() {
       if (ep.isActive) {
         startPolling(ep.id, ep.url, ep.intervalKey, (result: PollResult) => {
           setEndpoints(prev =>
-            prev.map(e => (e.id === ep.id ? { ...e, results: [...e.results, result] } : e))
+            prev.map(e => (e.id === ep.id ? { ...e, results: [...e.results, result].slice(-100) } : e))
           );
         });
       }
@@ -166,7 +166,7 @@ function App() {
       setEndpoints(prev =>
         prev.map(ep =>
           ep.id === newEndpoint.id
-            ? { ...ep, results: [...ep.results, result] }
+            ? { ...ep, results: [...ep.results, result].slice(-100) }
             : ep
         )
       );
@@ -193,7 +193,7 @@ function App() {
     startPolling(id, ep.url, ep.intervalKey, (result: PollResult) => {
       setEndpoints(prev =>
         prev.map(e =>
-          e.id === id ? { ...e, results: [...e.results, result] } : e
+          e.id === id ? { ...e, results: [...e.results, result].slice(-100) } : e
         )
       );
     });

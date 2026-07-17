@@ -1,5 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import type { PollResult } from '../../polling';
+import type { PollResult } from '../services/polling';
 
 type Props = {
   data: {

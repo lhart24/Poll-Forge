@@ -4,7 +4,7 @@ import {
   stopPolling,
   type MonitoredEndpoint,
   type PollResult,
-} from '../../polling';
+} from '../services/polling';
 
 import './style.css';
 import MainGraph from './ResponseChart';

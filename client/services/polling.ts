@@ -18,6 +18,8 @@ export interface PollResult {
     body: unknown;
 }
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
 export async function handleInput(input: string): Promise<PollResult> {
     const res = await fetch('http://localhost:5001/api/submit', {
         method: 'POST',

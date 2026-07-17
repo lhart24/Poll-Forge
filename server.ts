@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import dns from 'dns/promises'
+import dns from 'dns/promises';
+import rateLimit from 'express-rate-limit';
 
 
 
@@ -28,6 +29,19 @@ async function isSafeUrl(input: string): Promise<boolean> {
   return !blocked.test(address);
 }
 const app = express();
+
+const submitLimiter = rateLimit({
+    windowMs: 60_000, // 1 minute
+    max: 30,           // 30 requests per IP per minute
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {
+        success: false,
+        error: 'Too many requests. Please slow down.',
+    },
+});
+
+
 
 app.use(cors({
     origin: process.env.FRONTEND_URL || "https://localhost:5173"

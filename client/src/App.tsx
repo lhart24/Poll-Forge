@@ -133,7 +133,18 @@ function App() {
     const stored = localStorage.getItem('endpoints');
     return stored ? JSON.parse(stored) : [];
   });
-
+  useEffect(() => {
+    endpoints.forEach(ep => {
+      if (ep.isActive) {
+        startPolling(ep.id, ep.url, ep.intervalKey, (result: PollResult) => {
+          setEndpoints(prev =>
+            prev.map(e => (e.id === ep.id ? { ...e, results: [...e.results, result] } : e))
+          );
+        });
+      }
+    });
+    
+  }, []);
   useEffect(() => {
     localStorage.setItem('endpoints', JSON.stringify(endpoints));
   }, [endpoints]);

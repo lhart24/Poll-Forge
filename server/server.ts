@@ -53,7 +53,7 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 5001;
 
-app.post('/api/submit', async (req, res) => {
+app.post('/api/submit', submitLimiter, async (req, res) => {
     const { input } = req.body;
 
     if (!input) {

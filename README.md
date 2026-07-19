@@ -1,6 +1,6 @@
 A full-stack API testing application built with React, TypeScript, Node.js, and Express. The application allows users to send HTTP requests to REST APIs and inspect the responses in a simple, easy-to-use interface.
 
-Project Status: 🚧 In Progress
+Project Status: ✅ Live
 
 Live demo: https://poll-forge-client-production.up.railway.app
 
